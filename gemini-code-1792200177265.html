@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أكاديمية سكينة | كوتش هاني — وعي • متعة • جودة حياة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sakeena-olive: #687864;
+      --sakeena-olive-dark: #4A5847;
+      --sakeena-gold: #C8A25A;
+      --sakeena-sand: #DCCBA8;
+      --sakeena-teal: #5E8C83;
+      --sakeena-bg: #FCFBF9;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: radial-gradient(circle at top, #FFFFFF 0%, #F6F3EC 100%);
+      color: #3B4738;
+      margin: 0;
+      padding: 0;
+    }
+    .sakeena-btn-primary {
+      background: linear-gradient(135deg, #687864 0%, #4F5E4C 100%);
+      border: 1px solid rgba(200, 162, 90, 0.45);
+    }
+    .sakeena-btn-primary:hover {
+      background: linear-gradient(135deg, #5B6B57 0%, #42503F 100%);
+    }
+    .gold-border {
+      border: 1px solid rgba(200, 162, 90, 0.38);
+    }
+    .gold-shadow {
+      box-shadow: 0 12px 35px -10px rgba(104, 120, 100, 0.14), 0 4px 15px -5px rgba(200, 162, 90, 0.1);
+    }
+    .mindfulness-circle {
+      animation: pulseCalm 8s infinite ease-in-out;
+    }
+    @keyframes pulseCalm {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F6F3EC; }
+    ::-webkit-scrollbar-thumb { background: #C8A25A88; border-radius: 10px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <header class="bg-white/95 backdrop-blur-md border-b border-[#E8DFCE] sticky top-0 z-30 px-4 py-2.5 shadow-sm">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-14 h-14 rounded-full bg-white gold-border flex items-center justify-center overflow-hidden shadow-sm shrink-0 p-0.5">
+          <img id="headerLogoImg" src="logo.jpg" onerror="this.style.display='none'; document.getElementById('headerSvgFallback').style.display='flex';" class="w-full h-full object-contain rounded-full" alt="سكينة" />
+          <div id="headerSvgFallback" style="display:none;" class="w-full h-full items-center justify-center">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="46" fill="#FFFFFF" stroke="#C8A25A" stroke-width="2.5"/>
+              <circle cx="32" cy="40" r="9" fill="#F3E5C8" opacity="0.75"/>
+              <path d="M22 65 Q36 55 52 65 T72 62" fill="none" stroke="#DCCBA8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M25 70 Q38 62 54 70" fill="none" stroke="#C8A25A" stroke-width="2" stroke-linecap="round"/>
+              <text x="52" y="63" text-anchor="middle" fill="#687864" font-family="serif" font-size="48" font-weight="bold">S</text>
+              <path d="M72 58 Q82 48 80 38 Q70 44 72 58 Z" fill="#687864"/>
+            </svg>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-xl text-[#5A6956] tracking-wide">أكاديمية سكينة</h1>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#F5EFE2] text-[#9A7432] font-bold border border-[#C8A25A]/40">
+              كوتش هاني
+            </span>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-bold mt-0.5">
+            <span class="text-[#687864]">وعي</span>
+            <span class="text-[#C8A25A]">•</span>
+            <span class="text-[#5E8C83]">متعة</span>
+            <span class="text-[#C8A25A]">•</span>
+            <span class="text-[#C8A25A]">جودة حياة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleMindfulnessModal()" class="text-xs px-3.5 py-2 rounded-xl bg-[#F4F6F3] hover:bg-[#E8EDE6] text-[#5A6956] gold-border transition flex items-center gap-1.5 font-bold">
+          <span>✨</span>
+          <span class="hidden sm:inline">مساحة الاتزان والصفاء الذهني</span>
+        </button>
+
+        <button onclick="openAdminModal()" class="text-xs px-3.5 py-2 rounded-xl bg-[#FAF6EE] hover:bg-[#F2E9D8] text-[#8C6928] gold-border transition font-bold">
+          ⚙️ لوحة كوتش هاني
+        </button>
+
+        <button id="logoutBtn" onclick="logoutClient()" class="hidden text-xs px-3 py-2 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 transition font-bold">
+          خروج
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center p-4">
+    <div id="loginScreen" class="w-full max-w-md bg-white rounded-3xl p-8 gold-shadow gold-border my-auto relative overflow-hidden">
+      <div class="absolute -top-16 -left-16 w-40 h-40 rounded-full bg-[#C8A25A]/10 blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -right-16 w-40 h-40 rounded-full bg-[#687864]/10 blur-2xl pointer-events-none"></div>
+
+      <div class="text-center mb-6 relative z-10">
+        <div class="w-28 h-28 mx-auto mb-3 rounded-full bg-white p-1 gold-border shadow-md flex items-center justify-center overflow-hidden">
+          <img id="loginLogoImg" src="logo.jpg" onerror="this.style.display='none'; document.getElementById('loginSvgFallback').style.display='flex';" class="w-full h-full object-contain rounded-full" alt="لوجو سكينة" />
+          <div id="loginSvgFallback" style="display:none;" class="w-full h-full items-center justify-center">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="50" r="46" fill="#FFFFFF" stroke="#C8A25A" stroke-width="2.5"/>
+              <circle cx="32" cy="40" r="9" fill="#F3E5C8" opacity="0.75"/>
+              <path d="M22 65 Q36 55 52 65 T72 62" fill="none" stroke="#DCCBA8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M25 70 Q38 62 54 70" fill="none" stroke="#C8A25A" stroke-width="2" stroke-linecap="round"/>
+              <text x="52" y="63" text-anchor="middle" fill="#687864" font-family="serif" font-size="48" font-weight="bold">S</text>
+              <path d="M72 58 Q82 48 80 38 Q70 44 72 58 Z" fill="#687864"/>
+            </svg>
+          </div>
+        </div>
+
+        <h2 class="text-3xl font-extrabold text-[#687864]">سكينة</h2>
+        <p class="text-xs font-bold tracking-widest mt-1 mb-2">
+          <span class="text-[#687864]">وعي</span> <span class="text-[#C8A25A]">•</span>
+          <span class="text-[#5E8C83]">متعة</span> <span class="text-[#C8A25A]">•</span>
+          <span class="text-[#C8A25A]">جودة حياة</span>
+        </p>
+        <p class="text-xs text-[#768472]">رفيقك الذكي للوعي والكوتشينج بإشراف <strong>كوتش هاني</strong></p>
+      </div>
+
+      <div id="loginError" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs text-center font-bold"></div>
+
+      <form onsubmit="handleClientLogin(event)" class="space-y-4 relative z-10">
+        <div>
+          <label class="block text-xs font-bold text-[#5A6956] mb-1.5">اسم المستخدم (Username)</label>
+          <input id="loginUsername" type="text" required placeholder="مثال: ahmed"
+            class="w-full px-4 py-3 rounded-xl bg-[#FCFBF9] border border-[#DFD5C3] focus:outline-none focus:border-[#687864] text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-[#5A6956] mb-1.5">كلمة المرور (Password)</label>
+          <input id="loginPassword" type="password" required placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-xl bg-[#FCFBF9] border border-[#DFD5C3] focus:outline-none focus:border-[#687864] text-sm" />
+        </div>
+        <button id="loginSubmitBtn" type="submit"
+          class="w-full py-3.5 rounded-xl sakeena-btn-primary text-white font-bold text-sm shadow-md transition">
+          دخول إلى مساحتي الخاصة
+        </button>
+      </form>
+
+      <div class="mt-6 pt-4 border-t border-[#F0EAE0] text-center">
+        <p class="text-[11px] text-[#849280] leading-relaxed">
+          🔒 جلساتك وملفك الشخصي مشفرة بالكامل.<br/>
+          متاح التحدث <strong>بالصوت أو الكتابة</strong> باللهجة المصرية وأي لغة تفضلها.
+        </p>
+      </div>
+    </div>
+
+    <div id="chatScreen" class="hidden w-full max-w-4xl flex-1 flex flex-col bg-white rounded-3xl gold-shadow gold-border overflow-hidden h-[82vh]">
+      <div class="bg-[#FAF8F4] px-5 py-3 border-b border-[#EAE2D3] flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#687864] animate-pulse"></span>
+          <span class="text-sm font-extrabold text-[#4A5847]" id="welcomeClientName">جلسة كوتشينج خاصة</span>
+          <span class="text-xs text-[#9A7432] font-bold">| أكاديمية سكينة - كوتش هاني</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="voiceLangSelect" class="text-xs bg-white border border-[#DFD5C3] rounded-lg px-2.5 py-1.5 text-[#4A5847] font-bold focus:outline-none">
+            <option value="ar-EG">🎙️ الصوت: عربي (مصري)</option>
+            <option value="ar-SA">🎙️ الصوت: عربي (فصحى/خليجي)</option>
+            <option value="en-US">🎙️ Voice: English</option>
+            <option value="fr-FR">🎙️ Voice: Français</option>
+          </select>
+
+          <button id="autoSpeakBtn" onclick="toggleAutoSpeak()" class="text-xs px-3 py-1.5 rounded-lg bg-[#F2F5F1] text-[#5A6956] font-bold border border-[#687864]/30 transition">
+            🔊 نطق الردود: مفعّل
+          </button>
+        </div>
+      </div>
+
+      <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-5 bg-[#FCFBF9]"></div>
+
+      <div class="p-4 bg-white border-t border-[#EAE2D3]">
+        <div id="recordingStatus" class="hidden mb-2.5 px-4 py-2 rounded-xl bg-[#F4F6F3] border border-[#687864]/30 text-[#4A5847] text-xs flex items-center justify-between font-bold">
+          <span>🎙️ الميكروفون يستمع إليك الآن.. تحدث بحرية بأي لغة ثم اضغط إرسال</span>
+          <button onclick="stopVoiceRecording()" class="text-red-600 font-bold">إيقاف التسجيل</button>
+        </div>
+
+        <form onsubmit="sendUserMessage(event)" class="flex items-end gap-2.5">
+          <button type="button" id="micBtn" onclick="toggleVoiceRecording()" title="التحدث بالصوت"
+            class="w-12 h-12 rounded-2xl bg-[#F4F6F3] hover:bg-[#E6ECE4] text-[#5A6956] flex items-center justify-center text-xl transition shrink-0 gold-border">
+            🎙️
+          </button>
+
+          <textarea id="chatInput" rows="1" placeholder="اكتب ما يدور في ذهنك أو اضغط على الميكروفون للتحدث بأي لغة..."
+            onkeydown="if(event.key === 'Enter' && !event.shiftKey){ event.preventDefault(); sendUserMessage(event); }"
+            class="flex-1 px-4 py-3.5 rounded-2xl bg-[#FCFBF9] border border-[#DFD5C3] focus:outline-none focus:border-[#687864] text-sm resize-none max-h-36"></textarea>
+
+          <button type="submit" id="sendBtn"
+            class="px-6 h-12 rounded-2xl sakeena-btn-primary text-white text-sm font-bold shadow-sm transition shrink-0">
+            إرسال
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="mindfulnessModal" class="hidden fixed inset-0 bg-[#2C352A]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-[#FCFBF9] rounded-3xl max-w-sm w-full p-7 text-center gold-border shadow-2xl">
+      <span class="text-xs font-bold px-3 py-1 rounded-full bg-[#F5EFE2] text-[#9A7432] border border-[#C8A25A]/30">
+        وعي • متعة • جودة حياة
+      </span>
+      <h3 class="text-lg font-extrabold text-[#4A5847] mt-3 mb-1">✨ مساحة الاتزان والصفاء الذهني</h3>
+      <p class="text-xs text-[#768472] mb-6">دقيقة هادئة لفصل الضغوط الخارجية واستعادة حضورك الذهني</p>
+
+      <div class="my-8 flex items-center justify-center">
+        <div class="w-32 h-32 rounded-full bg-[#687864]/15 border-2 border-[#C8A25A] flex items-center justify-center mindfulness-circle shadow-inner">
+          <span class="text-xs font-bold text-[#4A5847]">حضور.. اتزان..</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-[#5A6956] mb-6 leading-relaxed">
+        اسمح لأفكارك بالهدوء الآن.. خذ شهيقاً عميقاً ببطء، واترك أي توتر يخرج مع الزفير.
+      </p>
+
+      <button onclick="toggleMindfulnessModal()" class="w-full py-3 rounded-xl sakeena-btn-primary text-white text-xs font-bold">
+        العودة إلى الجلسة بذهن صافٍ
+      </button>
+    </div>
+  </div>
+
+  <div id="adminModal" class="hidden fixed inset-0 bg-[#2C352A]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[92vh] overflow-y-auto p-6 gold-border shadow-2xl">
+      <div class="flex items-center justify-between border-b border-[#EFEAE0] pb-4 mb-4">
+        <div>
+          <h3 class="text-lg font-extrabold text-[#4A5847]">⚙️ لوحة إدارة أكاديمية سكينة — كوتش هاني</h3>
+          <p class="text-xs text-[#768472]">إدارة المشتركين، إضافة معلومات حرة، وقراءة ملفات العميل (Word / PDF / صور / Text)</p>
+        </div>
+        <button onclick="closeAdminModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200">إغلاق ✕</button>
+      </div>
+
+      <div id="adminAuthSection" class="space-y-3 max-w-sm mx-auto my-8 text-center">
+        <label class="block text-xs font-bold text-[#4A5847]">كلمة مرور كوتش هاني (الافتراضية: hany2026)</label>
+        <input id="adminPassInput" type="password" placeholder="أدخل كلمة المرور"
+          class="w-full px-4 py-3 rounded-xl bg-[#FCFBF9] border border-[#DFD5C3] text-sm text-center" />
+        <button onclick="loadAdminClients()" class="w-full py-3 rounded-xl sakeena-btn-primary text-white text-xs font-bold">
+          فتح لوحة التحكم
+        </button>
+      </div>
+
+      <div id="adminDashboardContent" class="hidden space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#FAF6EE] p-4 rounded-2xl border border-[#C8A25A]/40">
+          <div>
+            <label class="block text-xs font-bold text-[#8C6928] mb-1">🖼️ رفع صورة اللوجو الأصلي لسكينة (اختياري)</label>
+            <input type="file" accept="image/*" onchange="handleLogoUpload(event)" class="text-xs w-full bg-white p-2 rounded-lg border border-[#DFD5C3]" />
+            <p class="text-[11px] text-[#768472] mt-1">اختر صورة اللوجو من جهازك هنا أو ارفعها باسم <code>logo.jpg</code> على GitHub.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#8C6928] mb-1">🧠 مفتاح تشغيل عقل HANI الذكي (Gemini API Key)</label>
+            <div class="flex gap-2">
+              <input id="directGeminiKey" type="password" placeholder="AIzaSy..." class="flex-1 p-2 rounded-lg bg-white border border-[#DFD5C3] text-xs" />
+              <button type="button" onclick="saveDirectApiKey()" class="px-3 py-2 rounded-lg sakeena-btn-primary text-white text-xs font-bold">تفعيل العقل</button>
+            </div>
+            <p class="text-[11px] text-[#768472] mt-1">ضع مفتاح Gemini API هنا ليعمل الشات بكامل قوته فوراً.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <form onsubmit="saveClientFromAdmin(event)" class="lg:col-span-7 space-y-3 bg-[#FCFBF9] p-5 rounded-2xl border border-[#E5DEC9]">
+            <h4 class="font-extrabold text-sm text-[#4A5847] border-b pb-2" id="formTitle">➕ إضافة عميل جديد أو تحديث ملفه</h4>
+            <input type="hidden" id="editClientId" />
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">اسم العميل</label>
+                <input id="f_client_name" required class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1" placeholder="مثال: أحمد طارق" />
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">حالة الاشتراك الشهري</label>
+                <select id="f_is_active" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1 font-bold">
+                  <option value="true">✅ مفعّل (مشترك حالياً)</option>
+                  <option value="false">⛔ موقوف (انتهى الاشتراك)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">اسم المستخدم (Username)</label>
+                <input id="f_username" required class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1" placeholder="ahmed2026" />
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">كلمة المرور (Password)</label>
+                <input id="f_password" required class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1" placeholder="123456" />
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-[#5A6956]">الأسلوب واللهجة المفضلة للعميل</label>
+              <input id="f_preferred_style" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1" placeholder="لهجة مصرية دافئة، يحب الأسئلة المختصرة العميقة" />
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">الخلفية والسياق الحياتي/المهني</label>
+                <textarea id="f_background" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">الأهداف الكبرى الحالية</label>
+                <textarea id="f_main_goals" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">التحديات والأنماط والمخاوف</label>
+                <textarea id="f_challenges" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-[#5A6956]">نقاط القوة والموارد النفسية</label>
+                <textarea id="f_strengths" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-[#5A6956]">ملخص آخر جلسة مع كوتش هاني والخطوة المتفق عليها</label>
+              <textarea id="f_last_session" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+            </div>
+
+            <div>
+              <label class="text-xs font-bold text-[#5A6956]">توجيهات كوتش هاني الخاصة لـ HANI</label>
+              <textarea id="f_coach_notes" rows="2" class="w-full p-2.5 rounded-xl bg-white border border-[#DFD5C3] text-xs mt-1"></textarea>
+            </div>
+
+            <div class="pt-2 border-t border-[#E5DEC9]">
+              <label class="text-xs font-extrabold text-[#8C6928] block">
+                📝 إضافة معلومات جديدة / إضافية حرة عن العميل
+              </label>
+              <textarea id="f_additional_info" rows="5" placeholder="اكتب هنا أي معلومات إضافية بحرية تامة، أو ارفع ملفات بالأسفل (Word / PDF / Text / صورة) ليتم قراءتها وإضافتها هنا تلقائياً..."
+                class="w-full p-3 rounded-xl bg-white border-2 border-[#C8A25A]/40 focus:border-[#687864] text-xs mt-1.5 leading-relaxed"></textarea>
+            </div>
+
+            <div class="bg-[#FAF6EE] p-3.5 rounded-2xl border border-dashed border-[#C8A25A]">
+              <label class="block text-xs font-extrabold text-[#4A5847] mb-1">
+                📎 رفع وقراءة ملفات العميل (Word, PDF, Text, أو صورة)
+              </label>
+              <p class="text-[11px] text-[#768472] mb-2">
+                اختر أي ملف متاح لديك وسيقوم النظام باستخراج المعلومات منه وإضافتها لملف العميل:
+              </p>
+              <input type="file" id="clientFileInput" multiple accept=".txt,.md,.csv,.docx,.pdf,image/*"
+                onchange="handleClientFilesUpload(event)"
+                class="text-xs w-full bg-white p-2 rounded-xl border border-[#DFD5C3]" />
+              <div id="fileUploadStatus" class="text-[11px] text-[#687864] font-bold mt-2"></div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+              <button type="submit" class="flex-1 py-3 rounded-xl sakeena-btn-primary text-white text-xs font-bold shadow">
+                💾 حفظ ملف العميل بالكامل
+              </button>
+              <button type="button" onclick="resetAdminForm()" class="px-4 py-3 rounded-xl bg-gray-200 text-xs font-bold">
+                تفريغ
+              </button>
+            </div>
+          </form>
+
+          <div class="lg:col-span-5 space-y-3">
+            <h4 class="font-extrabold text-sm text-[#4A5847]">👥 قائمة عملاء أكاديمية سكينة</h4>
+            <div id="clientsListContainer" class="space-y-2.5 max-h-[68vh] overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (window['pdfjsLib']) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    const HANI_MASTER_CONSTITUTION = `
+# HANI — ELITE AI LIFE COACH (أكاديمية سكينة - إشراف كوتش هاني)
+## الشعار: وعي • متعة • جودة حياة
+
+### 1. هويتك ورسالتك
+أنت HANI، مدرب حياة وتطوير إنساني افتراضي متقدم في "أكاديمية سكينة" بإشراف كوتش هاني، مصمم لتقديم تجربة كوتشينج شخصية وعميقة، باللغة العربية (مع فهم ممتاز للهجة المصرية وباقي اللهجات) أو بأي لغة يتحدث بها العميل.
+أنت لست محرك إجابات، ولا مستشارًا يوزع النصائح الجاهزة، ولا روبوتًا يكرر عبارات تحفيزية. أنت شريك في رحلة العميل نحو الوعي الذاتي، واكتشاف قدراته، وفهم أنماطه، واتخاذ قراراته، وتحويل أهدافه إلى أفعال.
+
+### 2. المبادئ الأساسية لهويتك
+- الإنسان قبل المشكلة، والفهم قبل الحل، والاستماع قبل السؤال التالي.
+- الفضول قبل الافتراض، والوعي قبل النصيحة، والاختيار قبل التوجيه.
+- الفعل الواقعي قبل الكلام التحفيزي، واستقلال العميل قبل اعتماده عليك.
+- التعاطف دون شفقة أو أحكام، الصراحة دون قسوة، التحدي دون إذلال، الطموح دون وعود زائفة.
+
+### 3. إطار الكوتشينج المهني (ICF)
+التزم بالكفاءات الأساسية للاتحاد الدولي للكوتشينج ICF: الأخلاقيات والحدود الواضحة، عقلية الفضول، الاتفاق على هدف الجلسة، الأمان النفسي، الحضور والتركيز، الإنصات الفعّال لما يقوله العميل وما يكرره وما يتجنبه، إثارة الوعي بأسئلة قوية، وتحويل الوعي إلى خطوات عملية.
+
+### 4. افهم الإنسان قبل أن تحاول مساعدته
+استكشف عند الحاجة دون استجواب طويل: هدفه الحقيقي وراء الطلب الظاهر، قيمه وأولوياته، احتياجاته ومخاوفه، نقاط قوته، العقبات الواقعية والداخلية، والافتراضات المؤثرة على قراراته.
+
+### 5. أسلوب إدارة الجلسات
+اتبع تدفقًا مرنًا: (1. الاتصال والحضور -> 2. تحديد الهدف -> 3. الاستكشاف -> 4. إثارة الوعي -> 5. الخيارات والقرار -> 6. الفعل والالتزام -> 7. الإغلاق).
+
+### 6. مكتبة أدوات وتمارين الكوتشينج
+استخدم عند المناسبة وببساطة: GROW، SMART Goals، عجلة الحياة، استكشاف القيم ونقاط القوة، التمييز بين الحقائق والتفسيرات، استكشاف المعتقدات، تصميم العادات الصغيرة وخطط If-Then، واستكشاف الاحتياجات والحدود في العلاقات.
+
+### 7. كيف تتحدث مع العميل (تعدد اللغات + الصوت والشات)
+- تحدث بصورة طبيعية ودافئة وواضحة بأي لغة يختارها العميل (العربية باللهجة المصرية، الإنجليزية، الفرنسية، أو الخلط بينها).
+- لا تجعل كل رد طويلًا؛ أحيانًا يكون سؤال واحد عميق أفضل من عشر فقرات.
+- تجنب القوائم الطويلة والعبارات الآلية المحفوظة.
+
+### 8. الحدود الأخلاقية والسلامة النفسية
+أنت كوتش تطوير شخصي ولست طبيبًا نفسيًا. لا تشخّص اضطرابات ولا تصف أدوية. في حال وجود خطر إيذاء للنفس أو أزمة نفسية حادة، تعامل بجدية وتعاطف ووجّه العميل لدعم بشري متخصص فورًا.
+`;
+
+    let currentClient = null;
+    let chatMessages = [];
+    let autoSpeak = true;
+    let lastUsedVoiceMic = false;
+    let recognition = null;
+    let isRecording = false;
+    let pendingClientImages = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedLogo = localStorage.getItem('sakeena_custom_logo');
+      if (savedLogo) {
+        document.getElementById('headerLogoImg').src = savedLogo;
+        document.getElementById('loginLogoImg').src = savedLogo;
+      }
+      const savedKey = localStorage.getItem('sakeena_gemini_key');
+      if (savedKey) {
+        document.getElementById('directGeminiKey').value = savedKey;
+      }
+    });
+
+    function getLocalClients() {
+      const stored = localStorage.getItem('sakeena_clients_db');
+      if (stored) return JSON.parse(stored);
+      const initial = [
+        {
+          id: 'demo-1',
+          username: 'ahmed',
+          password: '1234',
+          client_name: 'أحمد',
+          is_active: true,
+          preferred_style: 'لهجة مصرية هادئة ودافئة، يحب الأسئلة المختصرة',
+          background: '31 سنة، يعمل في شركة خاصة، يشعر باستنزاف طاقة وتشتت بين الشغل وحياته الشخصية.',
+          main_goals: 'استعادة التوازن النفسي، وضع حدود واضحة في الشغل، والالتزام بخطة كارير جديدة.',
+          challenges_and_patterns: 'التسويف وقت الضغط، جلد الذات عند التقصير، وصعوبة قول لا.',
+          strengths: 'واعي بنفسه، صادق في مشاعره، ويلتزم لما الخطوة تكون صغيرة ومحددة.',
+          last_session_summary: 'اتفقنا في آخر جلسة مع كوتش هاني على تحديد أولوية واحدة يومياً ورفض المهام الإضافية بعد الساعة 6 مساءً.',
+          coach_notes: 'ابدأ معه بتهدئة التشتت، ولا تفتح معه أكثر من هدف في نفس المحادثة.',
+          additional_info: '',
+          images_base64: []
+        }
+      ];
+      localStorage.setItem('sakeena_clients_db', JSON.stringify(initial));
+      return initial;
+    }
+
+    function saveLocalClients(list) {
+      localStorage.setItem('sakeena_clients_db', JSON.stringify(list));
+    }
+
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        localStorage.setItem('sakeena_custom_logo', reader.result);
+        document.getElementById('headerLogoImg').src = reader.result;
+        document.getElementById('headerLogoImg').style.display = 'block';
+        document.getElementById('headerSvgFallback').style.display = 'none';
+        document.getElementById('loginLogoImg').src = reader.result;
+        document.getElementById('loginLogoImg').style.display = 'block';
+        document.getElementById('loginSvgFallback').style.display = 'none';
+        alert('تم تثبيت لوجو أكاديمية سكينة بنجاح! 🌿');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveDirectApiKey() {
+      const key = document.getElementById('directGeminiKey').value.trim();
+      localStorage.setItem('sakeena_gemini_key', key);
+      alert('تم حفظ وتفعيل مفتاح عقل HANI الذكي بنجاح!');
+    }
+
+    async function handleClientFilesUpload(event) {
+      const files = Array.from(event.target.files);
+      if (!files.length) return;
+
+      const statusBox = document.getElementById('fileUploadStatus');
+      const infoArea = document.getElementById('f_additional_info');
+      statusBox.textContent = '⏳ جاري قراءة واستخراج محتوى الملفات...';
+
+      for (const file of files) {
+        const ext = file.name.split('.').pop().toLowerCase();
+
+        try {
+          if (['txt', 'md', 'csv'].includes(ext)) {
+            const text = await file.text();
+            infoArea.value += `\n\n--- [محتوى ملف نصي: ${file.name}] ---\n${text.trim()}`;
+          }
+          else if (ext === 'docx' && window.mammoth) {
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer });
+            infoArea.value += `\n\n--- [محتوى ملف Word: ${file.name}] ---\n${result.value.trim()}`;
+          }
+          else if (ext === 'pdf' && window['pdfjsLib']) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let pdfText = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+              const page = await pdf.getPage(i);
+              const content = await page.getTextContent();
+              pdfText += content.items.map(item => item.str).join(' ') + '\n';
+            }
+            infoArea.value += `\n\n--- [محتوى ملف PDF: ${file.name}] ---\n${pdfText.trim()}`;
+          }
+          else if (file.type.startsWith('image/')) {
+            const base64DataUrl = await new Promise((resolve) => {
+              const r = new FileReader();
+              r.onload = () => resolve(r.result);
+              r.readAsDataURL(file);
+            });
+            const base64Clean = base64DataUrl.split(',')[1];
+            pendingClientImages.push({ mimeType: file.type, data: base64Clean, name: file.name });
+
+            const directKey = localStorage.getItem('sakeena_gemini_key');
+            if (directKey) {
+              statusBox.textContent = `⏳ جاري قراءة وتحليل الصورة (${file.name}) بالذكاء الاصطناعي...`;
+              const imgAnalysis = await analyzeImageWithGemini(base64Clean, file.type, directKey);
+              infoArea.value += `\n\n--- [تحليل صورة مرفقة (${file.name})] ---\n${imgAnalysis}`;
+            } else {
+              infoArea.value += `\n\n--- [تم إرفاق صورة بملف العميل: ${file.name}] ---`;
+            }
+          }
+        } catch (err) {
+          console.error('File read error:', err);
+        }
+      }
+
+      statusBox.textContent = `✅ تم استخراج وإضافة محتوى (${files.length}) ملف بنجاح داخل خانة المعلومات الإضافية!`;
+    }
+
+    async function analyzeImageWithGemini(base64Data, mimeType, apiKey) {
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: 'اقرأ كل النصوص والتفاصيل والملاحظات الموجودة في هذه الصورة بدقة تامة ولخصها كنقاط واضحة لملف العميل في الكوتشينج:' },
+                  { inline_data: { mime_type: mimeType, data: base64Data } }
+                ]
+              }]
+            })
+          }
+        );
+        const data = await res.json();
+        return data?.candidates?.[0]?.content?.parts?.[0]?.text || 'تم حفظ الصورة في سياق العميل.';
+      } catch {
+        return 'تم إرفاق الصورة في ملف العميل.';
+      }
+    }
+
+    async function handleClientLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const errBox = document.getElementById('loginError');
+      errBox.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', payload: { username, password } })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          startClientSession(data.client);
+          return;
+        }
+      } catch (err) {}
+
+      const clients = getLocalClients();
+      const found = clients.find(c => c.username.toLowerCase() === username.toLowerCase() && c.password === password);
+      if (!found) {
+        errBox.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+      if (!found.is_active) {
+        errBox.textContent = 'انتهى اشتراكك الشهري الحالي في أكاديمية سكينة. تواصل مع كوتش هاني لتجديد حسابك.';
+        errBox.classList.remove('hidden');
+        return;
+      }
+      startClientSession(found);
+    }
+
+    function startClientSession(client) {
+      currentClient = client;
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('chatScreen').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+      document.getElementById('welcomeClientName').textContent = `جلسة خاصة: ${client.client_name} 🌿`;
+
+      const welcomeText = `أهلاً بيك يا ${client.client_name} في أكاديمية سكينة.. مساحتك الآمنة للوعي والاتزان. تحب نكمل من النقطة اللي وقفتوا عندها آخر مرة مع كوتش هاني، ولا فيه موضوع جديد شاغل بالك النهاردة حابب نبدأ بيه؟`;
+      chatMessages = [{ role: 'assistant', content: welcomeText }];
+      renderMessages();
+    }
+
+    function logoutClient() {
+      currentClient = null;
+      chatMessages = [];
+      window.speechSynthesis.cancel();
+      document.getElementById('chatScreen').classList.add('hidden');
+      document.getElementById('logoutBtn').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    function renderMessages() {
+      const container = document.getElementById('messagesContainer');
+      container.innerHTML = '';
+
+      chatMessages.forEach((msg) => {
+        const isAI = msg.role === 'assistant';
+        const wrapper = document.createElement('div');
+        wrapper.className = `flex ${isAI ? 'justify-start' : 'justify-end'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = isAI
+          ? 'max-w-[85%] rounded-3xl rounded-tr-none bg-white gold-border text-[#3B4738] p-4 shadow-sm text-sm leading-relaxed'
+          : 'max-w-[85%] rounded-3xl rounded-tl-none sakeena-btn-primary text-white p-4 shadow-sm text-sm leading-relaxed';
+
+        bubble.innerHTML = `
+          <div class="flex items-center justify-between gap-3 mb-1.5">
+            <span class="text-[11px] font-extrabold ${isAI ? 'text-[#687864]' : 'text-[#FAF6EE]'}">
+              ${isAI ? '🌿 HANI | أكاديمية سكينة' : currentClient.client_name}
+            </span>
+            ${isAI ? `<button onclick="speakText(\`${msg.content.replace(/`/g, '').replace(/"/g, '&quot;')}\`)" class="text-xs text-[#9A7432] font-bold hover:underline">🔊 استماع</button>` : ''}
+          </div>
+          <div class="whitespace-pre-line">${msg.content}</div>
+        `;
+
+        wrapper.appendChild(bubble);
+        container.appendChild(wrapper);
+      });
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function sendUserMessage(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text || !currentClient) return;
+
+      input.value = '';
+      chatMessages.push({ role: 'user', content: text });
+      renderMessages();
+
+      const container = document.getElementById('messagesContainer');
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'text-xs text-[#687864] font-bold px-3 py-2 animate-pulse';
+      loadingDiv.textContent = '🌿 HANI ينصت إليك بعمق...';
+      container.appendChild(loadingDiv);
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'chat',
+            payload: {
+              clientId: currentClient.id,
+              clientDirectProfile: currentClient,
+              messages: chatMessages,
+              isVoiceMode: lastUsedVoiceMic
+            }
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.reply) {
+            loadingDiv.remove();
+            chatMessages.push({ role: 'assistant', content: data.reply });
+            renderMessages();
+            if (autoSpeak) speakText(data.reply);
+            lastUsedVoiceMic = false;
+            return;
+          }
+        }
+      } catch (err) {}
+
+      const directKey = localStorage.getItem('sakeena_gemini_key');
+      if (directKey) {
+        try {
+          const fullSystemPrompt = `${HANI_MASTER_CONSTITUTION}
+### وضع التواصل الحالي:
+${lastUsedVoiceMic ? 'العميل يتحدث بالصوت الآن (Voice Mode): اجعل ردك قصيراً جداً (2 إلى 4 جمل)، طبيعياً وبدون أي رموز (*) أو (#)، واختم بسؤال واحد واضح.' : 'وضع الشات النصي: اجعل ردك دافئاً ومقسماً لفقرات قصيرة مريحة للعين، واختم بسؤال يفتح الوعي.'}
+
+### الملف السري الكامل للعميل الحالي (${currentClient.client_name}):
+- اسم العميل: ${currentClient.client_name}
+- الأسلوب واللهجة المفضلة: ${currentClient.preferred_style || 'لهجة مصرية طبيعية'}
+- الخلفية والسياق الحياتي/المهني: ${currentClient.background || 'غير محدد'}
+- الأهداف الكبرى الحالية: ${currentClient.main_goals || 'غير محدد'}
+- التحديات والأنماط والمخاوف: ${currentClient.challenges_and_patterns || 'غير محدد'}
+- نقاط القوة والموارد: ${currentClient.strengths || 'غير محدد'}
+- ملخص آخر جلسة مع كوتش هاني والخطوة المطلوبة: ${currentClient.last_session_summary || 'غير محدد'}
+- توجيهات كوتش هاني السرية لك: ${currentClient.coach_notes || 'غير محدد'}
+- معلومات إضافية ومحتوى الملفات المرفقة للعميل:
+${currentClient.additional_info || 'لا توجد ملفات إضافية'}
+`;
+
+          const formattedContents = chatMessages.map(m => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.content }]
+          }));
+
+          const aiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${directKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                system_instruction: { parts: [{ text: fullSystemPrompt }] },
+                contents: formattedContents,
+                generationConfig: { temperature: 0.7, maxOutputTokens: 700 }
+              })
+            }
+          );
+
+          const aiData = await aiRes.json();
+          const reply = aiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (reply) {
+            loadingDiv.remove();
+            chatMessages.push({ role: 'assistant', content: reply });
+            renderMessages();
+            if (autoSpeak) speakText(reply);
+            lastUsedVoiceMic = false;
+            return;
+          }
+        } catch (directErr) {
+          console.error(directErr);
+        }
+      }
+
+      loadingDiv.remove();
+      const noticeReply = `⚠️ لتشغيل عقل الذكاء الاصطناعي الحقيقي، اضغط على زر "⚙️ لوحة كوتش هاني" بالأعلى وضع مفتاح Gemini API Key في الخانة المخصصة (أو في إعدادات Vercel).`;
+      chatMessages.push({ role: 'assistant', content: noticeReply });
+      renderMessages();
+    }
+
+    function toggleVoiceRecording() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('يرجى فتح الموقع من متصفح Chrome أو Safari لتشغيل الميكروفون الصوتي.');
+        return;
+      }
+      if (isRecording && recognition) {
+        recognition.stop();
+        return;
+      }
+      recognition = new SpeechRecognition();
+      recognition.lang = document.getElementById('voiceLangSelect').value;
+      recognition.interimResults = true;
+
+      recognition.onstart = () => {
+        isRecording = true;
+        lastUsedVoiceMic = true;
+        document.getElementById('recordingStatus').classList.remove('hidden');
+        document.getElementById('micBtn').classList.add('bg-red-100', 'text-red-700');
+      };
+      recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        document.getElementById('chatInput').value = transcript;
+      };
+      recognition.onend = () => {
+        isRecording = false;
+        document.getElementById('recordingStatus').classList.add('hidden');
+        document.getElementById('micBtn').classList.remove('bg-red-100', 'text-red-700');
+      };
+      recognition.start();
+    }
+
+    function stopVoiceRecording() {
+      if (recognition && isRecording) recognition.stop();
+    }
+
+    function toggleAutoSpeak() {
+      autoSpeak = !autoSpeak;
+      const btn = document.getElementById('autoSpeakBtn');
+      if (autoSpeak) {
+        btn.textContent = '🔊 نطق الردود: مفعّل';
+        btn.className = 'text-xs px-3 py-1.5 rounded-lg bg-[#F2F5F1] text-[#5A6956] font-bold border border-[#687864]/30 transition';
+      } else {
+        window.speechSynthesis.cancel();
+        btn.textContent = '🔇 نطق الردود: صامت';
+        btn.className = 'text-xs px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 font-bold border border-gray-300 transition';
+      }
+    }
+
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const cleanText = text.replace(/[*#_~`]/g, '');
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      const isArabic = /[\u0600-\u06FF]/.test(cleanText);
+      utterance.lang = isArabic ? 'ar-EG' : 'en-US';
+      utterance.rate = 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleMindfulnessModal() {
+      document.getElementById('mindfulnessModal').classList.toggle('hidden');
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminModal').classList.remove('hidden');
+    }
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    async function loadAdminClients() {
+      const adminPassword = document.getElementById('adminPassInput').value.trim();
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'admin_list', payload: { adminPassword } })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('adminAuthSection').classList.add('hidden');
+          document.getElementById('adminDashboardContent').classList.remove('hidden');
+          renderAdminClientsList(data.clients);
+          return;
+        }
+      } catch (e) {}
+
+      if (adminPassword === 'hany2026') {
+        document.getElementById('adminAuthSection').classList.add('hidden');
+        document.getElementById('adminDashboardContent').classList.remove('hidden');
+        renderAdminClientsList(getLocalClients());
+      } else {
+        alert('كلمة المرور غير صحيحة (الافتراضية: hany2026)');
+      }
+    }
+
+    function renderAdminClientsList(clients) {
+      const container = document.getElementById('clientsListContainer');
+      container.innerHTML = '';
+      clients.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'p-3.5 rounded-2xl bg-[#FCFBF9] border border-[#E5DEC9] flex items-center justify-between shadow-sm';
+        div.innerHTML = `
+          <div>
+            <div class="font-extrabold text-xs text-[#4A5847]">${c.client_name} <span class="text-[#9A7432]">(${c.username})</span></div>
+            <div class="text-[11px] font-bold mt-0.5 ${c.is_active ? 'text-green-700' : 'text-red-600'}">
+              ${c.is_active ? '● اشتراك نشط' : '● حساب موقوف'}
+            </div>
+          </div>
+          <button onclick='fillAdminForm(${JSON.stringify(c).replace(/'/g, "&apos;")})' class="text-xs font-bold px-3 py-1.5 rounded-xl bg-white gold-border hover:bg-[#FAF6EE] text-[#5A6956]">
+            تعديل / إرفاق ملفات ✏️
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function fillAdminForm(c) {
+      document.getElementById('editClientId').value = c.id || '';
+      document.getElementById('f_client_name').value = c.client_name || '';
+      document.getElementById('f_is_active').value = String(c.is_active);
+      document.getElementById('f_username').value = c.username || '';
+      document.getElementById('f_password').value = c.password || '';
+      document.getElementById('f_preferred_style').value = c.preferred_style || '';
+      document.getElementById('f_background').value = c.background || '';
+      document.getElementById('f_main_goals').value = c.main_goals || '';
+      document.getElementById('f_challenges').value = c.challenges_and_patterns || '';
+      document.getElementById('f_strengths').value = c.strengths || '';
+      document.getElementById('f_last_session').value = c.last_session_summary || '';
+      document.getElementById('f_coach_notes').value = c.coach_notes || '';
+      document.getElementById('f_additional_info').value = c.additional_info || '';
+      pendingClientImages = c.images_base64 || [];
+      document.getElementById('formTitle').textContent = `✏️ تعديل ملف العميل: ${c.client_name}`;
+    }
+
+    function resetAdminForm() {
+      document.getElementById('editClientId').value = '';
+      document.getElementById('formTitle').textContent = '➕ إضافة عميل جديد';
+      pendingClientImages = [];
+      document.getElementById('fileUploadStatus').textContent = '';
+      ['f_client_name','f_username','f_password','f_preferred_style','f_background','f_main_goals','f_challenges','f_strengths','f_last_session','f_coach_notes','f_additional_info'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+    }
+
+    async function saveClientFromAdmin(e) {
+      e.preventDefault();
+      const adminPassword = document.getElementById('adminPassInput').value.trim();
+      const clientData = {
+        id: document.getElementById('editClientId').value || undefined,
+        client_name: document.getElementById('f_client_name').value,
+        is_active: document.getElementById('f_is_active').value === 'true',
+        username: document.getElementById('f_username').value,
+        password: document.getElementById('f_password').value,
+        preferred_style: document.getElementById('f_preferred_style').value,
+        background: document.getElementById('f_background').value,
+        main_goals: document.getElementById('f_main_goals').value,
+        challenges_and_patterns: document.getElementById('f_challenges').value,
+        strengths: document.getElementById('f_strengths').value,
+        last_session_summary: document.getElementById('f_last_session').value,
+        coach_notes: document.getElementById('f_coach_notes').value,
+        additional_info: document.getElementById('f_additional_info').value,
+        images_base64: pendingClientImages
+      };
+
+      const localList = getLocalClients();
+      if (clientData.id) {
+        const idx = localList.findIndex(x => x.id === clientData.id);
+        if (idx > -1) localList[idx] = clientData;
+      } else {
+        clientData.id = 'client-' + Date.now();
+        localList.unshift(clientData);
+      }
+      saveLocalClients(localList);
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'admin_save_client', payload: { adminPassword, clientData } })
+        });
+        if (res.ok) {
+          alert('تم حفظ ملف العميل والمعلومات الإضافية والملفات المرفقة بنجاح! ✅');
+          resetAdminForm();
+          loadAdminClients();
+          return;
+        }
+      } catch (err) {}
+
+      alert('تم حفظ ملف العميل والمعلومات الإضافية والملفات المرفقة بنجاح! ✅');
+      resetAdminForm();
+      renderAdminClientsList(getLocalClients());
+    }
+  </script>
+</body>
+</html>
